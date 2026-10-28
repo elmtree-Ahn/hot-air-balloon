@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>같은 크기면 데운 공기가 더 가벼워요! | 어게인 실험과학 수학학원</title>
+<meta name="description" content="날아가는 티백, 공기 저울, 비닐 열기구로 알아보는 데운 공기와 상승 기류">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky:#e8f4fd; --sky2:#bfe0f8; --blue:#3a9ae0; --blue-d:#2476b8; --line:#d3e7f5;
+  --warm:#ff8a3d; --warm-d:#e0661c; --warm-s:#fff0e3;
+  --navy:#24407e; --navy-d:#172c5c;
+  --ruby:#d81e4a; --ruby-d:#a3102f; --ink:#33414f; --sub:#6c7a8a;
+  --mint:#dcf5ea; --mint2:#8fdcb8;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-weight:500;background:#fff}
+body{min-height:100vh;display:flex;flex-direction:column;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;touch-action:manipulation}
+.jua,header,nav,.bbtn,.msg,.card,.quiz,.pc,.bin h3,footer{font-family:"Jua",sans-serif}
+
+.bbtn{font-size:22px;min-height:64px;min-width:140px;padding:10px 26px;color:#fff;background:var(--blue);border-radius:999px;
+  box-shadow:inset 0 -6px 0 rgba(0,0,0,.12),0 5px 0 var(--blue-d);word-break:keep-all}
+.bbtn:active{transform:translateY(3px)}
+.bbtn.warm{background:var(--warm);box-shadow:inset 0 -6px 0 rgba(0,0,0,.1),0 5px 0 var(--warm-d)}
+.bbtn.navy{background:var(--navy);box-shadow:inset 0 -6px 0 rgba(0,0,0,.15),0 5px 0 var(--navy-d)}
+.bbtn.white{background:#fff;color:var(--blue-d);box-shadow:inset 0 -6px 0 rgba(0,0,0,.05),0 5px 0 var(--line);border:3px solid var(--sky2)}
+.bbtn.on{background:#fff3c4;color:#8a6400;border:3px solid #e8c95a;box-shadow:inset 0 -6px 0 rgba(0,0,0,.06),0 5px 0 #e8c95a}
+.bbtn:disabled{opacity:.4;cursor:default}
+.round{width:128px;height:128px;min-width:0;min-height:0;padding:0;border-radius:50%;font-size:24px;line-height:1.2}
+.hold{min-width:190px;min-height:84px;font-size:28px}
+.hold.heating{background:#ff6a1a;transform:translateY(3px);box-shadow:inset 0 -6px 0 rgba(0,0,0,.1),0 2px 0 var(--warm-d),0 0 0 6px #ffd9bf}
+
+header{position:sticky;top:0;z-index:30;background:#fff;box-shadow:0 3px 0 var(--line);padding:10px 16px}
+.head-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.titles{flex:1;min-width:0}
+.brand{font-size:16px;color:var(--sub)}
+h1{margin:0;font-weight:400;font-size:clamp(22px,3.8vw,32px);color:var(--navy);line-height:1.15;word-break:keep-all}
+.share{min-width:0;font-size:18px;min-height:54px;padding:8px 22px;flex:none}
+
+nav{max-width:1100px;width:100%;margin:14px auto 0;padding:0 16px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.tab{position:relative;min-height:66px;border-radius:20px;background:var(--sky);font-size:clamp(15px,2vw,20px);line-height:1.2;padding:6px;
+  border:3px solid transparent;word-break:keep-all;text-align:center}
+.tab.on{background:var(--warm-s);border-color:var(--warm);color:var(--warm-d)}
+.tab .star{position:absolute;top:-12px;right:-2px;font-size:24px;color:#ffb800;display:none}
+.tab.done .star{display:block;animation:pop .5s}
+
+main{flex:1;max-width:1100px;width:100%;margin:0 auto;padding:16px}
+.panel{display:none}
+.panel.on{display:block;animation:fadein .3s}
+.msg{background:var(--sky);border-radius:20px;padding:12px 18px;font-size:clamp(18px,2.4vw,23px);line-height:1.45;word-break:keep-all;margin-bottom:12px;min-height:calc(2.9em + 24px)}
+.stage{position:relative;width:min(100%,var(--mw,720px),max(300px,calc((100vh - 380px)*var(--ar))));margin:0 auto;border-radius:28px;overflow:hidden;box-shadow:0 0 0 3px var(--line);background:#f6fbff}
+.stage svg{display:block;width:100%;height:auto}
+.drag svg{touch-action:none}
+.grab{cursor:grab}
+.row{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.card{display:none;margin:16px auto 0;max-width:880px;border-radius:24px;background:var(--mint);border:4px solid var(--mint2);padding:16px 20px;
+  font-size:clamp(20px,2.7vw,26px);text-align:center;line-height:1.5;color:#1f6b4b;word-break:keep-all}
+.card.on{display:block;animation:pop .5s}
+.hint{animation:nudge 1.2s ease-in-out infinite}
+.hint.off{display:none}
+
+.toggle{display:inline-flex;align-items:center;gap:10px;min-width:0;min-height:64px;font-size:19px;padding:6px 16px}
+.sw{flex:none;position:relative;width:46px;height:26px;border-radius:99px;background:#c9d6e2;transition:background .2s}
+.sw::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s}
+.toggle.on .sw{background:var(--warm)}
+.toggle.on .sw::after{transform:translateX(20px)}
+
+/* 4 온도일까? 압력일까? */
+.sort{display:grid;grid-template-columns:1fr 1.45fr 1fr;gap:14px;align-items:stretch}
+.deck{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;align-content:start}
+.bin{border:4px dashed;border-radius:24px;padding:10px;min-height:340px;transition:transform .15s,border-style .15s}
+.bin h3{margin:0 0 10px;font-weight:400;font-size:clamp(20px,2.4vw,24px);text-align:center;line-height:1.2;word-break:keep-all}
+.bin h3 small{display:block;font-size:.72em;color:var(--sub)}
+.bin.t{border-color:#ffc49a;background:#fff8f2}.bin.t h3{color:var(--warm-d)}
+.bin.p{border-color:#a8cdf0;background:#f4f9ff}.bin.p h3{color:var(--navy)}
+.bin.over{border-style:solid;transform:scale(1.02)}
+.bin.no{animation:shake .4s}
+.pc{position:relative;background:#fff;border:3px solid var(--line);border-radius:20px;padding:8px;text-align:center;font-size:18px;line-height:1.3;
+  word-break:keep-all;touch-action:none;cursor:grab;transition:transform .25s;box-shadow:0 4px 0 var(--line)}
+.pc svg{display:block;width:100%;max-width:120px;height:auto;margin:0 auto 6px;pointer-events:none}
+.pc.drag{transition:none;z-index:50;box-shadow:0 14px 26px rgba(0,0,0,.2);cursor:grabbing}
+.pc.in{display:grid;grid-template-columns:62px 1fr;align-items:center;gap:8px;text-align:left;font-size:16px;padding:6px 8px;margin-bottom:8px;
+  cursor:default;box-shadow:none;border-color:var(--mint2);background:#f0fbf6;animation:pop .4s}
+.pc.in svg{margin:0}
+
+.quiz{max-width:820px;margin:0 auto;text-align:center}
+.score{font-size:22px;color:var(--sub)}
+.score b{font-weight:400;color:var(--warm-d);font-size:1.3em}
+.q{background:var(--sky);border-radius:28px;padding:28px 20px;margin:12px 0;font-size:clamp(24px,3.6vw,34px);line-height:1.4;word-break:keep-all;min-height:150px;display:grid;place-items:center}
+.ox{display:flex;gap:20px;justify-content:center}
+.ox button{width:min(42%,220px);aspect-ratio:1.3;border-radius:32px;font-size:clamp(70px,13vw,110px);line-height:1;color:#fff}
+.ox .o{background:var(--blue);box-shadow:0 8px 0 var(--blue-d)}
+.ox .x{background:var(--ruby);box-shadow:0 8px 0 var(--ruby-d)}
+.ox button:active{transform:translateY(4px)}
+.ox button:disabled{opacity:.4}
+.fb{min-height:70px;margin-top:16px;font-size:clamp(20px,2.8vw,26px);line-height:1.4;word-break:keep-all}
+.fb.good{color:#1f8a57}.fb.bad{color:#c8283a}
+
+footer{background:var(--sky);padding:16px;text-align:center;font-size:17px;color:var(--navy);line-height:1.6}
+.toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:var(--ink);color:#fff;font-family:"Jua",sans-serif;font-size:20px;padding:12px 26px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .3s;z-index:99;white-space:nowrap}
+.toast.on{opacity:1}
+.conf{position:fixed;top:-20px;width:14px;height:14px;z-index:98;pointer-events:none;animation:fall linear forwards}
+.spk{position:fixed;z-index:97;pointer-events:none;font-size:28px;line-height:1;color:#ffc93c;text-shadow:0 0 6px #fff;animation:spk .9s ease-out forwards}
+.hab{position:fixed;bottom:-170px;width:110px;z-index:96;pointer-events:none;animation:hab 4.4s ease-in forwards}
+@keyframes hab{0%{transform:translate(0,0)}50%{transform:translate(22px,-55vh)}100%{transform:translate(-12px,-130vh)}}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+@keyframes spk{0%{transform:translate(-50%,-50%) scale(.3);opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.3) rotate(120deg);opacity:0}}
+@keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes nudge{50%{transform:translateX(12px)}}
+@keyframes shake{20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}
+svg text{font-family:"Jua",sans-serif}
+
+@media (max-width:900px){
+  .sort{grid-template-columns:1fr 1fr}
+  .deck{order:-1;grid-column:1/-1;grid-template-columns:repeat(3,1fr)}
+  .bin{min-height:220px}
+}
+@media (max-width:560px){
+  nav{grid-template-columns:repeat(3,1fr)}
+  .msg{min-height:calc(4.35em + 24px)}
+  .bbtn{font-size:19px;padding:10px 18px;min-width:0}
+  .round{width:112px;height:112px;font-size:21px;padding:0}
+  .hold{min-width:150px;font-size:24px}
+  .share{font-size:17px;padding:8px 16px}
+  .deck{grid-template-columns:repeat(2,1fr)}
+  .pc{font-size:16px}
+}
+</style>
+</head>
+<body>
+<header><div class="head-in">
+  <div class="titles"><div class="brand">어게인 실험과학 수학학원</div><h1>같은 크기면 데운 공기가 더 가벼워요!</h1></div>
+  <button class="bbtn warm share" id="share">공유하기</button>
+</div></header>
+
+<nav>
+  <button class="tab on" data-t="0">날아가는 티백<span class="star">★</span></button>
+  <button class="tab" data-t="1">같은 크기 공기 저울<span class="star">★</span></button>
+  <button class="tab" data-t="2">비닐 열기구<span class="star">★</span></button>
+  <button class="tab" data-t="3">온도일까? 압력일까?<span class="star">★</span></button>
+  <button class="tab" data-t="4">OX 퀴즈<span class="star">★</span></button>
+</nav>
+
+<main>
+<!-- 1 날아가는 티백 -->
+<section class="panel on">
+  <div class="msg" id="m0">접시 위에 티백 종이 원통을 세웠어요. '불 붙이기'를 눌러 보세요. 원통이 어떻게 될까요?</div>
+  <div class="stage" style="--ar:1.545">
+    <svg id="sv1" viewBox="0 0 680 440" role="img" aria-label="접시 위에 세운 티백 종이 원통">
+      <rect width="680" height="440" fill="#f6fbff"/>
+      <rect y="404" width="680" height="36" fill="#e3edf5"/>
+      <ellipse cx="340" cy="399" rx="130" ry="20" fill="#c9d6e2"/>
+      <ellipse cx="340" cy="393" rx="130" ry="20" fill="#fff" stroke="#c9d6e2" stroke-width="3"/>
+      <ellipse cx="340" cy="393" rx="92" ry="12" fill="none" stroke="#e3edf5" stroke-width="3"/>
+      <text x="520" y="384" font-size="19" fill="#6c7a8a">불에 타지 않는 접시</text>
+      <!-- 종이 원통 -->
+      <rect id="paper" x="312" y="230" width="56" height="158" fill="#f6ecd6" stroke="#d8c39a" stroke-width="2.5"/>
+      <ellipse id="paperTop" cx="340" cy="230" rx="28" ry="6" fill="#efe2c4" stroke="#d8c39a" stroke-width="2.5"/>
+      <!-- 재 -->
+      <g id="ash">
+        <rect id="ashR" x="312" y="230" width="56" height="0" fill="#ececec" fill-opacity=".75" stroke="#a9a9a9" stroke-width="2"/>
+        <ellipse id="ashTop" cx="340" cy="230" rx="28" ry="6" fill="#f6f6f6" stroke="#a9a9a9" stroke-width="2" opacity="0"/>
+      </g>
+      <!-- 불꽃 -->
+      <g id="fl1" opacity="0">
+        <ellipse rx="31" ry="6" fill="#ff9a3c" opacity=".75"/>
+        <g class="tg"><path d="M-9,0 C-14,-12 -6,-24 0,-40 C6,-24 14,-12 9,0 Z" fill="#ff8a3d"/><path d="M-5,0 C-7,-8 -3,-15 0,-25 C3,-15 7,-8 5,0 Z" fill="#ffd23f"/></g>
+        <g class="tg"><path d="M-9,0 C-14,-12 -6,-24 0,-40 C6,-24 14,-12 9,0 Z" fill="#ff8a3d"/><path d="M-5,0 C-7,-8 -3,-15 0,-25 C3,-15 7,-8 5,0 Z" fill="#ffd23f"/></g>
+        <g class="tg"><path d="M-9,0 C-14,-12 -6,-24 0,-40 C6,-24 14,-12 9,0 Z" fill="#ff8a3d"/><path d="M-5,0 C-7,-8 -3,-15 0,-25 C3,-15 7,-8 5,0 Z" fill="#ffd23f"/></g>
+      </g>
+      <!-- 연기 · 상승 기류 -->
+      <g id="smoke" fill="none" stroke="#9aa3ad" stroke-width="9" stroke-linecap="round" pointer-events="none">
+        <path d="M0,0 c-8,-12 8,-24 0,-36 c-8,-12 8,-24 0,-36"/><path d="M0,0 c-8,-12 8,-24 0,-36 c-8,-12 8,-24 0,-36"/>
+      </g>
+      <g id="up1" fill="none" stroke="#ffa865" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity="0">
+        <path d="M0,22 V-14 M-12,-2 L0,-16 L12,-2"/><path d="M0,22 V-14 M-12,-2 L0,-16 L12,-2"/><path d="M0,22 V-14 M-12,-2 L0,-16 L12,-2"/>
+      </g>
+      <text id="upT" x="408" y="160" font-size="26" fill="#e0661c" opacity="0">상승 기류</text>
+    </svg>
+  </div>
+  <div class="row"><button class="bbtn warm round" id="fire1">불 붙이기</button></div>
+  <div class="card" id="c0">불꽃 둘레에서 데운 공기가 위로 올라가요.<br>위로 올라가는 공기의 흐름을 상승 기류라고 해요.</div>
+</section>
+
+<!-- 2 같은 크기 공기 저울 -->
+<section class="panel">
+  <div class="msg" id="m1">똑같은 1L 통 두 개에 20℃ 공기가 가득 들어 있어요. 오른쪽 통 아래 막대를 끌어 공기를 데워 보세요.</div>
+  <div class="stage drag" style="--ar:1.447">
+    <svg id="sv2" viewBox="0 0 680 470" role="img" aria-label="위가 열린 1L 통 두 개를 올린 저울">
+      <defs><linearGradient id="tg2" x1="0" x2="1"><stop offset="0" stop-color="#7cc3ee"/><stop offset="1" stop-color="#ff8f80"/></linearGradient></defs>
+      <rect width="680" height="470" fill="#f6fbff"/>
+      <!-- 받침 · 저울대 -->
+      <rect x="270" y="400" width="140" height="14" rx="6" fill="#172c5c"/>
+      <path d="M340,330 L300,400 H380Z" fill="#24407e"/>
+      <g id="beam"><rect x="122" y="323" width="436" height="14" rx="7" fill="#7d93a8"/></g>
+      <circle cx="340" cy="330" r="10" fill="#172c5c"/>
+      <!-- 왼쪽 통 -->
+      <g id="boxL">
+        <rect x="125" y="300" width="10" height="30" fill="#9fb3c4"/>
+        <rect x="45" y="294" width="170" height="10" rx="5" fill="#9fb3c4"/>
+        <rect x="60" y="144" width="140" height="150" fill="#fdfeff"/>
+        <rect x="64" y="148" width="132" height="146" fill="#bfe0f8" fill-opacity=".9"/>
+        <path d="M60,144 V294 H200 V144" fill="none" stroke="#8fc0de" stroke-width="5" stroke-linejoin="round"/>
+        <text x="72" y="174" font-size="22" fill="#2476b8">20℃</text>
+        <text x="190" y="286" font-size="18" fill="#2476b8" text-anchor="end">1L</text>
+        <rect x="78" y="196" width="104" height="58" rx="14" fill="#fff" stroke="#24407e" stroke-width="2.5"/>
+        <text x="130" y="219" font-size="16" fill="#6c7a8a" text-anchor="middle">통 속 공기</text>
+        <text x="130" y="246" font-size="24" fill="#24407e" text-anchor="middle">약 1.2g</text>
+      </g>
+      <!-- 오른쪽 통 -->
+      <g id="boxR">
+        <rect x="545" y="300" width="10" height="30" fill="#9fb3c4"/>
+        <rect x="465" y="294" width="170" height="10" rx="5" fill="#9fb3c4"/>
+        <rect x="480" y="144" width="140" height="150" fill="#fdfeff"/>
+        <rect id="airR" x="484" y="148" width="132" height="146" fill="#bfe0f8" fill-opacity=".9"/>
+        <path id="spill" fill="#ffb8ae" fill-opacity=".55"/>
+        <g id="spillA" fill="none" stroke="#f08c7c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0">
+          <path d="M492,142 Q474,132 466,112 M466,112 l-3,12 M466,112 l10,7"/>
+          <path d="M608,142 Q626,132 634,112 M634,112 l3,12 M634,112 l-10,7"/>
+        </g>
+        <text id="spillT" x="550" y="100" font-size="19" fill="#e0565e" text-anchor="middle" opacity="0">통 밖으로 나간 공기</text>
+        <path d="M480,144 V294 H620 V144" fill="none" stroke="#8fc0de" stroke-width="5" stroke-linejoin="round"/>
+        <text id="tR" x="492" y="174" font-size="22" fill="#2476b8">20℃</text>
+        <text x="610" y="286" font-size="18" fill="#2476b8" text-anchor="end">1L</text>
+        <rect x="498" y="196" width="104" height="58" rx="14" fill="#fff" stroke="#24407e" stroke-width="2.5"/>
+        <text x="550" y="219" font-size="16" fill="#6c7a8a" text-anchor="middle">통 속 공기</text>
+        <text id="wR" x="550" y="246" font-size="24" fill="#24407e" text-anchor="middle">약 1.2g</text>
+      </g>
+      <!-- 온도 막대 -->
+      <text x="130" y="440" font-size="19" fill="#6c7a8a" text-anchor="middle">왼쪽 통은 늘 20℃</text>
+      <g id="hint2" class="hint"><text x="535" y="418" font-size="20" fill="#e0565e" text-anchor="middle">끌어서 데워요 →</text></g>
+      <rect x="420" y="436" width="230" height="14" rx="7" fill="url(#tg2)"/>
+      <text x="420" y="416" font-size="17" fill="#2476b8" text-anchor="middle">20℃</text>
+      <text x="650" y="416" font-size="17" fill="#e0565e" text-anchor="middle">100℃</text>
+      <circle id="knob2" cx="420" cy="443" r="20" fill="#fff" stroke="#e0565e" stroke-width="5"/>
+      <rect class="grab" id="grab2" x="390" y="396" width="290" height="74" fill="transparent"/>
+    </svg>
+  </div>
+  <div class="card" id="c1">공기를 데워도 공기의 무게는 그대로, 부피만 커져요.<br>그래서 1L 통에 남는 공기가 줄어들어요.</div>
+</section>
+
+<!-- 3 비닐 열기구 -->
+<section class="panel">
+  <div class="msg" id="m2">버너의 안전망 위로 큰 비닐을 들고 있어요. 먼저 '찬 공기로 부풀리기'를 눌러 보세요.</div>
+  <div class="stage" style="--ar:1.133;--mw:640px">
+    <svg id="sv3" viewBox="0 0 680 600" role="img" aria-label="가스버너 안전망 위에 든 큰 비닐">
+      <defs><linearGradient id="hg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#7cc3ee"/><stop offset="1" stop-color="#ff8a3d"/></linearGradient></defs>
+      <rect width="680" height="600" fill="#f6fbff"/>
+      <rect width="680" height="22" fill="#c9d6e2"/>
+      <text x="100" y="48" font-size="19" fill="#6c7a8a">천장</text>
+      <rect y="560" width="680" height="40" fill="#e3edf5"/>
+      <!-- 속 공기 온도 -->
+      <text x="49" y="140" font-size="16" fill="#e0661c" text-anchor="middle">뜨거움</text>
+      <rect x="36" y="150" width="26" height="300" rx="10" fill="#fff" stroke="#24407e" stroke-width="3"/>
+      <rect id="heatF" x="39" y="447" width="20" height="0" rx="7" fill="url(#hg)"/>
+      <text x="49" y="474" font-size="16" fill="#2476b8" text-anchor="middle">차가움</text>
+      <text x="49" y="500" font-size="18" fill="#24407e" text-anchor="middle">속 공기</text>
+      <!-- 버너 · 불꽃 · 안전망 -->
+      <rect x="280" y="518" width="120" height="42" rx="8" fill="#4a5563"/>
+      <circle cx="382" cy="539" r="8" fill="#9fb3c4"/>
+      <text x="318" y="547" font-size="20" fill="#fff" text-anchor="middle">버너</text>
+      <rect x="322" y="503" width="36" height="15" rx="3" fill="#7d93a8"/>
+      <g id="fl3" transform="translate(340 503)" opacity="0">
+        <path d="M-26,0 C-26,-20 -10,-34 0,-58 C10,-34 26,-20 26,0 Z" fill="#ff8a3d"/>
+        <path d="M-14,0 C-14,-12 -6,-22 0,-36 C6,-22 14,-12 14,0 Z" fill="#ffd23f"/>
+        <path d="M-22,0 C-18,-9 18,-9 22,0 Z" fill="#3a9ae0"/>
+      </g>
+      <g id="net" stroke="#9aa9b8" stroke-width="2"></g>
+      <rect x="290" y="438" width="100" height="65" fill="none" stroke="#6c7a8a" stroke-width="3"/>
+      <text x="402" y="476" font-size="19" fill="#6c7a8a">안전망</text>
+      <!-- 비닐 -->
+      <g id="bag">
+        <path id="bagB" fill="#f4f7fa" fill-opacity=".85" stroke="#9fb8cc" stroke-width="3"/>
+        <path id="wr3" d="M318,232 q9,10 0,22 M362,222 q-9,12 0,26 M330,300 q10,12 0,26 M354,332 q-9,10 2,24" fill="none" stroke="#b9cad8" stroke-width="2.5" stroke-linecap="round"/>
+        <path id="shine" d="M262,262 C258,228 272,204 298,194" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0"/>
+        <ellipse cx="340" cy="400" rx="62" ry="11" fill="none" stroke="#6c7a8a" stroke-width="5"/>
+        <text id="ringT" x="414" y="406" font-size="17" fill="#6c7a8a">철사 고리</text>
+        <g id="outA" fill="none" stroke="#ff8a3d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0">
+          <path d="M-10,-6 L0,4 L10,-6"/><path d="M-10,-6 L0,4 L10,-6"/>
+        </g>
+        <g id="inA" fill="none" stroke="#3a9ae0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0">
+          <path d="M-10,6 L0,-4 L10,6"/><path d="M-10,6 L0,-4 L10,6"/>
+        </g>
+      </g>
+      <!-- 비닐 윗부분을 잡은 손 -->
+      <g id="hands">
+        <rect x="288" y="148" width="48" height="32" rx="15" fill="#ffd9b0" stroke="#e0a56e" stroke-width="3"/>
+        <path d="M300,152 q-5,12 0,24" fill="none" stroke="#e0a56e" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="344" y="148" width="48" height="32" rx="15" fill="#ffd9b0" stroke="#e0a56e" stroke-width="3"/>
+        <path d="M380,152 q5,12 0,24" fill="none" stroke="#e0a56e" stroke-width="2.5" stroke-linecap="round"/>
+      </g>
+    </svg>
+  </div>
+  <div class="row">
+    <button class="bbtn" id="inflate">찬 공기로 부풀리기</button>
+    <button class="bbtn warm hold" id="heat">데우기</button>
+    <button class="bbtn navy" id="let">손 놓기</button>
+    <button class="bbtn white toggle" id="long3" aria-pressed="false"><span class="sw"></span>더 오래 데우기</button>
+  </div>
+  <div class="card" id="c2">데우면 속 공기 일부가 빠져나가 떠오르고,<br>식으면 바깥 공기가 다시 들어와 내려와요.</div>
+</section>
+
+<!-- 4 온도일까? 압력일까? -->
+<section class="panel">
+  <div class="msg" id="m3">카드를 끌어 알맞은 상자에 넣어 보세요. 기체의 부피가 바뀐 까닭은 온도일까요, 압력일까요?</div>
+  <div class="sort" id="sort">
+    <div class="bin t" data-k="t"><h3>온도 때문<small>(샤를의 법칙)</small></h3><div class="slot"></div></div>
+    <div class="deck" id="deck"></div>
+    <div class="bin p" data-k="p"><h3>압력 때문<small>(보일의 법칙)</small></h3><div class="slot"></div></div>
+  </div>
+  <div class="card" id="c3">온도에 따라 기체의 부피가 바뀌면 샤를의 법칙,<br>압력에 따라 기체의 부피가 바뀌면 보일의 법칙이에요.</div>
+</section>
+
+<!-- 5 OX 퀴즈 -->
+<section class="panel">
+  <div class="quiz">
+    <div class="score"><span id="qn">1</span> / 5 번째 문제 · 점수 <b id="sc">0</b>점</div>
+    <div class="q" id="q"></div>
+    <div class="ox" id="ox"><button class="o" data-a="O">O</button><button class="x" data-a="X">X</button></div>
+    <div class="fb" id="qfb"></div>
+    <div class="row"><button class="bbtn" id="next" style="display:none">다음 문제</button></div>
+  </div>
+</section>
+</main>
+
+<footer>어게인 실험과학 수학학원<br>교육문의 010.2976.5774</footer>
+<div class="toast" id="toast">주소가 복사됐어요</div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)), lerp=(a,b,k)=>a+(b-a)*k;
+const ease=k=>k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2, eOut=k=>1-Math.pow(1-k,3);
+const set=(el,o)=>{ for(const k in o) el.setAttribute(k,o[k]); };
+const mk=(tag,o,parent)=>{ const e=document.createElementNS('http://www.w3.org/2000/svg',tag); set(e,o); parent.appendChild(e); return e; };
+function mixC(a,b,k){ const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)), A=p(a), B=p(b);
+  return '#'+A.map((v,i)=>Math.round(lerp(v,B[i],k)).toString(16).padStart(2,'0')).join(''); }
+
+/* ---------- 소리 ---------- */
+let ac;
+function audio(){ if(!ac){const A=window.AudioContext||window.webkitAudioContext; if(A) ac=new A();} if(ac&&ac.state==='suspended') ac.resume(); return ac; }
+function tone(freq,dur,vol,type='sine',when=0,freqEnd){
+  const a=audio(); if(!a) return;
+  const o=a.createOscillator(), g=a.createGain(), t=a.currentTime+when;
+  o.type=type; o.frequency.setValueAtTime(freq,t); if(freqEnd) o.frequency.exponentialRampToValueAtTime(freqEnd,t+dur);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+0.03); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g).connect(a.destination); o.start(t); o.stop(t+dur+0.05);
+}
+function noise(dur,vol,f0,f1,q=1){
+  const a=audio(); if(!a) return;
+  const len=Math.floor(a.sampleRate*dur), buf=a.createBuffer(1,len,a.sampleRate), d=buf.getChannelData(0);
+  for(let i=0;i<len;i++) d[i]=Math.random()*2-1;
+  const s=a.createBufferSource(), f=a.createBiquadFilter(), g=a.createGain(), t=a.currentTime;
+  s.buffer=buf; f.type='bandpass'; f.Q.value=q; f.frequency.setValueAtTime(f0,t); f.frequency.exponentialRampToValueAtTime(f1,t+dur);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+dur*.15); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  s.connect(f).connect(g).connect(a.destination); s.start(t); s.stop(t+dur+.05);
+}
+const cheer=()=>[523,659,784,1047].forEach((f,i)=>tone(f,.3,.2,'triangle',i*.11));
+const boo=()=>tone(220,.35,.15,'sawtooth',0,140);
+const click=()=>tone(440,.1,.06,'triangle');
+const tick=()=>tone(900,.04,.05,'triangle');
+const ding=()=>{ tone(880,.25,.15,'triangle'); tone(1320,.35,.1,'triangle',.08); };
+const whoosh=()=>noise(1.1,.6,450,2600,.8);
+const fireS=()=>noise(.6,.3,500,1500,.7);
+const fillS=()=>noise(1.2,.25,300,900,.9);
+
+/* ---------- 보상 ---------- */
+const HAB='<svg viewBox="0 0 100 140"><path d="M50,4 C78,4 96,24 96,48 C96,72 70,88 64,104 H36 C30,88 4,72 4,48 C4,24 22,4 50,4Z" fill="#ff8a3d"/><path d="M50,4 C62,4 70,26 70,48 C70,72 62,90 58,104 H42 C38,90 30,72 30,48 C30,26 38,4 50,4Z" fill="#ffd23f"/><path d="M50,4 C54,4 57,26 57,48 C57,72 54,90 52,104 H48 C46,90 43,72 43,48 C43,26 46,4 50,4Z" fill="#24407e"/><path d="M38,104 L41,120 M62,104 L59,120" stroke="#6c7a8a" stroke-width="2.5"/><rect x="38" y="118" width="24" height="18" rx="3" fill="#a0703c"/></svg>';
+function confetti(){
+  const cols=['#3a9ae0','#ff8a3d','#24407e','#ffd23f','#8fdcb8'];
+  for(let i=0;i<60;i++){ const d=document.createElement('div'); d.className='conf';
+    d.style.left=Math.random()*100+'vw'; d.style.background=cols[i%5]; d.style.borderRadius=i%2?'50%':'3px';
+    d.style.animationDuration=1.4+Math.random()*1.6+'s'; d.style.animationDelay=Math.random()*.4+'s';
+    document.body.appendChild(d); setTimeout(()=>d.remove(),3600); }
+}
+function sparkle(el){
+  const r=el.getBoundingClientRect(), x=r.left+r.width/2, y=r.top+r.height/2;
+  for(let i=0;i<14;i++){ const s=document.createElement('span'), a=i/14*Math.PI*2, d=70+Math.random()*90;
+    s.className='spk'; s.textContent='✦'; s.style.left=x+'px'; s.style.top=y+'px';
+    s.style.setProperty('--dx',Math.cos(a)*d+'px'); s.style.setProperty('--dy',Math.sin(a)*d+'px');
+    s.style.color=i%3?'#ffc93c':'#ffb27a'; document.body.appendChild(s); setTimeout(()=>s.remove(),1000); }
+}
+function balloonUp(){ const d=document.createElement('div'); d.className='hab'; d.innerHTML=HAB; d.style.left=10+Math.random()*70+'vw'; document.body.appendChild(d); setTimeout(()=>d.remove(),4600); }
+const tabs=$$('.tab'), panels=$$('.panel');
+function done(i,el){ if(tabs[i].classList.contains('done')) return; tabs[i].classList.add('done'); confetti(); balloonUp(); sparkle(el||panels[i].querySelector('.stage')); cheer(); const c=$('#c'+i); if(c) c.classList.add('on'); }
+
+/* ---------- 탭 (주소 끝 #tab1~#tab5 로 처음 탭 고르기) ---------- */
+let cur=0;
+function showTab(i){ cur=i; holding=false; ui3(); tabs.forEach((t,j)=>t.classList.toggle('on',j===i)); panels.forEach((p,j)=>p.classList.toggle('on',j===i)); }
+tabs.forEach(b=>b.onclick=()=>{ showTab(+b.dataset.t); audio(); });
+
+/* ---------- 공유 ---------- */
+$('#share').onclick=async()=>{
+  const url=location.href;
+  if(navigator.share){ try{ await navigator.share({title:document.title,url}); return; }catch(e){ if(e.name==='AbortError') return; } }
+  try{ await navigator.clipboard.writeText(url); }
+  catch(e){ const t=document.createElement('textarea'); t.value=url; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+  const el=$('#toast'); el.classList.add('on'); setTimeout(()=>el.classList.remove('on'),1800);
+};
+
+/* ---------- 끌기 (막대) ---------- */
+function svgX(svg,e){ const p=svg.createSVGPoint(); p.x=e.clientX; p.y=e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()).x; }
+function draggable(hit,svg,start,move,end){
+  let id=null, x0=0;
+  hit.addEventListener('pointerdown',e=>{ if(id!==null) return; id=e.pointerId; try{ hit.setPointerCapture(id); }catch(_){} x0=svgX(svg,e); start(x0); audio(); e.preventDefault(); });
+  hit.addEventListener('pointermove',e=>{ if(e.pointerId===id) move(svgX(svg,e)-x0); });
+  const stop=e=>{ if(e.pointerId!==id) return; id=null; end(); };
+  hit.addEventListener('pointerup',stop); hit.addEventListener('pointercancel',stop);
+}
+
+/* ---------- 1 날아가는 티백 ---------- */
+// 위에서 아래로 9초 동안 타 내려감 → 다 타면 재 통이 상승 기류를 타고 떠올랐다가, 불이 꺼진 뒤 천천히 내려앉음
+const T0=230, B0=388, MSG1='다 탄 재가 올라가는 공기에 실려 날아올랐어요.';
+let ph1='idle', b1=0, tl=0, said1=0;
+const tg1=$$('#fl1 .tg'), up1=$$('#up1 path'), sm1=$$('#smoke path');
+$('#fire1').onclick=()=>{
+  audio();
+  if(ph1==='idle'){ ph1='burn'; b1=0; said1=0; fireS(); $('#fire1').disabled=true;
+    $('#m0').textContent='위에서부터 불꽃이 천천히 타 내려가요. 불꽃 둘레의 데운 공기가 위로 올라가고, 연기도 실려 올라가요.'; }
+  else if(ph1==='end'){ ph1='idle'; b1=0; tl=0; click(); $('#fire1').textContent='불 붙이기';
+    $('#m0').textContent='새 티백 원통을 세웠어요. 다시 불을 붙여 볼까요?'; }
+};
+function draw1(t,dt){
+  if(ph1==='burn'){ b1=Math.min(1,b1+dt/9);
+    if(b1>.35&&!said1){ said1=1; $('#m0').textContent='아직 타지 않은 종이가 남아 있는 동안은, 원통이 제자리에 그대로 있어요. 불꽃이 바닥까지 내려가면 어떻게 될까요?'; }
+    if(b1>=1){ ph1='lift'; tl=0; whoosh(); $('#m0').textContent=MSG1; } }
+  else if(ph1==='lift'){ tl+=dt; if(tl>=8){ ph1='end'; $('#fire1').textContent='다시 하기'; $('#fire1').disabled=false; done(0); } }
+  const yf=T0+(B0-T0)*b1, lifted=ph1==='lift'||ph1==='end';
+  const fl=ph1==='burn'?Math.min(1,.4+b1*8):ph1==='lift'?clamp(1-tl/1.8):0;
+  const ar=ph1==='burn'?Math.min(1,b1*6):ph1==='lift'?clamp(1-(tl-1.4)/1.6):0;
+  // 종이 · 재
+  set($('#paper'),{y:yf,height:B0-yf,opacity:b1>=1?0:1});
+  set($('#paperTop'),{cy:yf,stroke:ph1==='burn'?'#8a5a2b':'#d8c39a',opacity:b1>=1?0:1});
+  $('#ashR').setAttribute('height',yf-T0); $('#ashTop').setAttribute('opacity',b1>0?1:0);
+  let ax=0, ay=0, rot=0;
+  if(lifted){ const s=Math.min(tl,8);
+    if(s<3) ay=-190*eOut(clamp((s-.1)/2.9));
+    else{ const k=ease(clamp((s-3)/5)); ay=-190*(1-k); ax=70*k+16*Math.sin(k*Math.PI*3); rot=10*Math.sin(k*Math.PI*2); } }
+  $('#ash').setAttribute('transform',`translate(${ax} ${ay}) rotate(${rot} 340 ${(T0+B0)/2})`);
+  // 불꽃
+  $('#fl1').setAttribute('opacity',fl>0?1:0);
+  $('#fl1').setAttribute('transform',`translate(340 ${yf}) scale(${.5+.5*fl})`);
+  tg1.forEach((g,i)=>{ const x=[-17,0,17][i], s=[.7,1,.75][i]; g.setAttribute('transform',`translate(${x} 0) scale(${s} ${s*(1+.15*Math.sin(t*18+i*2))})`); });
+  // 상승 기류 · 연기
+  const base=lifted?B0:yf, L=lifted?240:170;
+  $('#up1').setAttribute('opacity',ar);
+  up1.forEach((p,i)=>{ const s=((t*55+i*L/3)%L)/L; p.setAttribute('transform',`translate(${[298,340,382][i]} ${base-24-s*L})`); p.setAttribute('opacity',Math.sin(Math.PI*s)); });
+  set($('#upT'),{opacity:ar,y:Math.max(60,base-90)});
+  sm1.forEach((p,i)=>{ const s=((t*32+i*80)%160)/160; p.setAttribute('transform',`translate(${332+i*16+10*Math.sin(t*2+i)+s*24} ${base-20-s*160})`); p.setAttribute('opacity',.35*Math.sin(Math.PI*s)*fl); });
+}
+
+/* ---------- 2 같은 크기 공기 저울 ---------- */
+// 20℃ 공기 1L = 약 1.204g. T℃로 데우면 같은 공기의 부피가 (T+273)/293 배 → 넘친 만큼 빠져나가 통 속엔 1.204×293/(T+273) g
+const HL=210;
+let T2=20, sx2=420, ang=0, step2=2, hit2=false;
+function setT(x){
+  const old=T2; T2=20+80*clamp((x-420)/230);
+  const s=Math.round(T2/10); if(s!==step2){ tick(); step2=s; }
+  if(T2>=99.5){ if(!hit2){ hit2=true; ding(); done(1); } $('#m1').textContent='뚜껑 없는 1L 통의 공기는 데우면 일부가 넘쳐 나가 가벼워져요.'; }
+  else if(T2<=20.5){ if(old>20.5) $('#m1').textContent='다시 20℃로 식히니 바깥 공기가 들어와, 두 통 속 공기의 무게가 같아졌어요.'; }
+  else $('#m1').textContent='공기를 데우면 부피가 커져서, 일부가 열린 윗부분으로 넘쳐 나가요. 오른쪽 통 속 공기의 무게를 보세요.';
+}
+draggable($('#grab2'),$('#sv2'), x=>{ sx2=x; setT(x); $('#hint2').classList.add('off'); }, dx=>setT(sx2+dx), ()=>{});
+function draw2(t,dt){
+  const r=(T2+273.15)/293.15, m=1.204*293.15/(T2+273.15), k=(T2-20)/80;
+  ang+=(-8*clamp((1.204-m)/(1.204-.946))-ang)*Math.min(1,dt*5);
+  const a=ang*Math.PI/180, c=Math.cos(a), s=Math.sin(a);
+  $('#beam').setAttribute('transform',`rotate(${ang} 340 330)`);
+  $('#boxL').setAttribute('transform',`translate(${HL-HL*c} ${-HL*s})`);
+  $('#boxR').setAttribute('transform',`translate(${HL*c-HL} ${HL*s})`);
+  const col=mixC('#bfe0f8','#ffb8ae',k), eh=146*(r-1), sp=10*k, top=148-eh;
+  $('#airR').setAttribute('fill',col);
+  set($('#spill'),{fill:col,d:`M484,148 C${484-sp},${148-eh*.7} 520,${top} 550,${top} C580,${top} ${616+sp},${148-eh*.7} 616,148 Z`});
+  $('#spillA').setAttribute('opacity',clamp(k*3)); set($('#spillT'),{opacity:clamp((k-.15)*4),y:top-12});
+  $('#tR').textContent=Math.round(T2)+'℃'; $('#tR').setAttribute('fill',k>.5?'#e0565e':'#2476b8');
+  $('#wR').textContent='약 '+m.toFixed(1)+'g';
+  $('#knob2').setAttribute('cx',420+230*k);
+}
+
+/* ---------- 3 비닐 열기구 ---------- */
+// 속 공기 온도 h(0~1). 데우는 동안 +0.22/초 (보통 0.6까지, '더 오래 데우기'는 1까지), 버너가 꺼지면 -0.045/초.
+// 놓을 때 h ≥ 0.35 이면 천장까지 떠오르고, 식어서 0.35 아래가 되면 천천히 내려옴.
+const BAG0=[278,400, 292,360,300,300,306,240, 310,200,322,174,340,172, 358,174,370,200,374,240, 380,300,388,360,402,400];
+const BAG1=[278,400, 250,370,228,300,232,240, 236,190,280,170,340,170, 400,170,444,190,448,240, 452,300,430,370,402,400];
+function bagD(p){ const n=BAG0.map((v,i)=>lerp(v,BAG1[i],p).toFixed(1));
+  return `M${n[0]},${n[1]} C${n.slice(2,8)} C${n.slice(8,14)} C${n.slice(14,20)} C${n.slice(20,26)} Z`; }
+(function(){ const g=$('#net');
+  for(let i=1;i<8;i++) mk('line',{x1:290+12.5*i,y1:438,x2:290+12.5*i,y2:503},g);
+  for(let j=1;j<5;j++) mk('line',{x1:290,y1:438+13*j,x2:390,y2:438+13*j},g); })();
+const UP=.35, TOPY=-146, FLX=190, FLY=158;
+let p3=0, inflating=false, h3=0, holding=false, long3=false, ph3='held', bx=0, by=0, rot3=0, k3=0, fx=0, fy=0, wasHot=false, handsOp=1, outK=0, inK=0, full3=false, seen3={};
+const heatB=$('#heat'), outP=$$('#outA path'), inP=$$('#inA path');
+function ui3(){
+  const held=ph3==='held'&&!inflating;
+  $('#inflate').disabled=!(held&&p3===0); heatB.disabled=$('#let').disabled=!(held&&p3>=1);
+  heatB.classList.toggle('heating',holding);
+}
+function next3(){ return !seen3.hot ? " 이번엔 '데우기'를 꾹 누르고 있다가 '손 놓기'를 눌러 보세요."
+  : !seen3.cool ? " 이번엔 속 공기가 파랗게 식은 뒤 '손 놓기'를 눌러 보세요."
+  : !long3 ? " '더 오래 데우기'를 켜고 또 해 보세요." : ' 또 해 볼까요?'; }
+$('#inflate').onclick=()=>{ if(p3>0) return; inflating=true; fillS(); ui3(); $('#m2').textContent='비닐 속에 찬 공기를 채우고 있어요.'; };
+heatB.addEventListener('pointerdown',e=>{ if(heatB.disabled||holding) return; holding=true; full3=false; try{ heatB.setPointerCapture(e.pointerId); }catch(_){} audio(); fireS(); ui3();
+  $('#m2').textContent='버너가 켜졌어요. 속 공기가 데워지며 부피가 커져, 일부가 아래 입구로 빠져나가요.'; e.preventDefault(); });
+const heatOff=()=>{ if(!holding) return; holding=false; ui3(); if(ph3!=='held') return;
+  $('#m2').textContent=h3>=UP?"손을 떼니 버너가 꺼졌어요. 이제 '손 놓기'를 눌러 볼까요?":"손을 떼니 버너가 꺼졌어요. 더 데우려면 '데우기'를 꾹 누르고 있어요."; };
+['pointerup','pointercancel','lostpointercapture'].forEach(ev=>heatB.addEventListener(ev,heatOff));
+heatB.oncontextmenu=e=>e.preventDefault();
+$('#let').onclick=()=>{
+  if($('#let').disabled) return; holding=false; audio(); click(); k3=0; fx=bx; fy=by;
+  if(h3>=UP){ ph3='rise'; wasHot=true; $('#m2').textContent='데운 공기 일부가 빠져나가, 비닐과 속 공기가 같은 크기의 바깥 공기보다 가벼워졌어요.'; }
+  else{ ph3='fall'; wasHot=false; seen3.cool=1; $('#m2').textContent=h3<.15?'찬 공기로만 부풀린 비닐은 손을 놓으니 천천히 떨어져요.':'아직 덜 데워졌어요. 비닐이 천천히 떨어져요.'; }
+  ui3();
+};
+$('#long3').onclick=()=>{ long3=!long3; const b=$('#long3'); b.classList.toggle('on',long3); b.setAttribute('aria-pressed',long3); tone(520,.08,.06,'triangle');
+  if(ph3==='held') $('#m2').textContent=long3?"'더 오래 데우기'를 켰어요. '데우기'를 더 오래 누르면 속 공기가 더 뜨거워져요. 비닐이 얼마나 오래 떠 있을까요?":"'더 오래 데우기'를 껐어요."; };
+function draw3(t,dt){
+  if(inflating){ p3=Math.min(1,p3+dt/1.3); if(p3>=1){ inflating=false; ui3(); $('#m2').textContent="찬 공기로 부풀렸어요. '손 놓기'를 누르면 비닐이 어떻게 될까요?"; } }
+  const burner=holding&&ph3==='held', hmax=long3?1:.6, h0=h3;
+  if(burner){ if(h3<hmax){ h3=Math.min(hmax,h3+dt*.22); if(h3>=hmax&&!full3){ full3=true; ding(); $('#m2').textContent="충분히 데워졌어요! 이제 '손 놓기'를 눌러 보세요."; } } }
+  else h3=Math.max(0,h3-dt*.045);
+  // 움직임
+  if(ph3==='rise'){ by+=(TOPY-by)*Math.min(1,dt*1.1); bx=6*Math.sin(t*1.3); if(by<TOPY+3) ph3='top'; }
+  if((ph3==='rise'||ph3==='top')&&h3<UP){ ph3='down'; k3=0; fx=bx; fy=by; $('#m2').textContent='속 공기가 식으며 파랗게 돌아와요. 바깥 공기가 다시 들어와, 비닐이 천천히 내려와요.'; }
+  if(ph3==='fall'||ph3==='down'){ k3=Math.min(1,k3+dt/(ph3==='fall'?3.2:5)); const e=ease(k3);
+    bx=lerp(fx,FLX,eOut(k3)); by=lerp(fy,FLY,e); rot3=5*Math.sin(k3*Math.PI*2);
+    if(k3>=1){ if(ph3==='down'){ seen3.hot=1; $('#m2').textContent='속 공기가 식어 바깥 공기가 다시 들어오니, 비닐이 바닥까지 내려왔어요.'; }
+      ph3='floor'; k3=0; tone(180,.2,.08,'sine',0,120); if(seen3.hot&&seen3.cool) done(2); } }
+  else if(ph3==='floor'){ k3+=dt; if(k3>1.6){ ph3='return'; k3=0; fx=bx; fy=by; } }
+  else if(ph3==='return'){ k3=Math.min(1,k3+dt/1.2); const e=ease(k3); bx=lerp(fx,0,e); by=lerp(fy,0,e);
+    if(k3>=1){ ph3='held'; ui3(); $('#m2').textContent='비닐을 다시 들었어요.'+next3(); } }
+  else rot3=0;
+  // 비닐 그리기
+  const hk=clamp(h3/.6), cool=mixC('#f4f7fa','#a9d8f7',p3);
+  const air=h3>.6?mixC('#ffa860','#ff8a3d',(h3-.6)/.4):hk<.5?mixC(cool,'#fde4d2',hk*2):mixC('#fde4d2','#ffa860',hk*2-1);
+  set($('#bagB'),{d:bagD(p3),fill:air});
+  $('#wr3').setAttribute('opacity',1-p3); $('#shine').setAttribute('opacity',.8*p3);
+  $('#bag').setAttribute('transform',`translate(${bx} ${by}) rotate(${rot3} 340 290)`);
+  $('#ringT').setAttribute('opacity',ph3==='held'?1:0);
+  const grip=ph3==='held'||ph3==='return';
+  handsOp+=((grip?1:0)-handsOp)*Math.min(1,dt*6);
+  set($('#hands'),{opacity:handsOp,transform:ph3==='return'||ph3==='held'?`translate(${bx} ${by})`:''});
+  // 드나드는 공기 화살표
+  outK+=((burner&&h3>h0?1:0)-outK)*Math.min(1,dt*5);
+  inK+=((inflating||(!burner&&h3<h0&&h3>.03)?1:0)-inK)*Math.min(1,dt*5);
+  const s=(t*40)%30;
+  $('#outA').setAttribute('opacity',outK); outP.forEach((p,i)=>p.setAttribute('transform',`translate(${[318,362][i]} ${412+s})`));
+  $('#inA').setAttribute('opacity',inK); inP.forEach((p,i)=>p.setAttribute('transform',`translate(${[318,362][i]} ${446-s})`));
+  // 속 공기 온도 · 버너 불꽃
+  set($('#heatF'),{y:447-294*h3,height:294*h3});
+  $('#fl3').setAttribute('opacity',burner?1:0);
+  $('#fl3').setAttribute('transform',`translate(340 503) scale(1 ${1+.12*Math.sin(t*20)})`);
+}
+ui3();
+
+/* ---------- 4 온도일까? 압력일까? ---------- */
+const IC={
+ bal:'<svg viewBox="0 0 120 80"><rect width="120" height="80" rx="12" fill="#e8f4fd"/><g stroke="#7cc3ee" stroke-width="3" stroke-linecap="round"><path d="M28,20 V48 M16,27 L40,41 M16,41 L40,27"/></g><path d="M80,22 C90,20 95,29 93,38 C91,44 95,49 89,55 C83,61 73,58 69,52 C63,46 67,42 65,36 C63,27 71,24 80,22Z" fill="#ff7b7b" stroke="#e0565e" stroke-width="2"/><path d="M71,34 q6,3 10,-1 M75,46 q5,-3 10,1" stroke="#e0565e" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M80,58 q-3,8 2,16" stroke="#6c7a8a" stroke-width="2" fill="none"/></svg>',
+ pong:'<svg viewBox="0 0 120 80"><rect width="120" height="80" rx="12" fill="#fff4ea"/><g fill="none" stroke="#ffa865" stroke-width="3" stroke-linecap="round"><path d="M36,26 q-5,-6 0,-12 q5,-6 0,-11"/><path d="M84,26 q-5,-6 0,-12 q5,-6 0,-11"/></g><path d="M26,36 H94 L87,74 H33 Z" fill="#bfe0f8" stroke="#8fc0de" stroke-width="3" stroke-linejoin="round"/><circle cx="60" cy="38" r="13" fill="#fff" stroke="#c9a46a" stroke-width="2.5"/><path d="M50,31 q6,5 11,-2" fill="none" stroke="#c9a46a" stroke-width="2.5" stroke-linecap="round"/></svg>',
+ pet:'<svg viewBox="0 0 120 80"><rect width="120" height="80" rx="12" fill="#f4f9ff"/><rect x="30" y="5" width="60" height="71" rx="8" fill="#fff" stroke="#8fa6ba" stroke-width="3"/><path d="M30,28 H90 M82,12 V22 M82,34 V46" stroke="#8fa6ba" stroke-width="3" stroke-linecap="round"/><path d="M54,38 h12 v4 l4,6 q-5,6 0,10 q-6,5 0,10 l-2,4 h-20 l-2,-4 q6,-5 0,-10 q5,-4 0,-10 l4,-6 Z" fill="#dff1fb" stroke="#7cc3ee" stroke-width="2.5" stroke-linejoin="round"/><rect x="55" y="33" width="10" height="6" rx="2" fill="#3a9ae0"/></svg>',
+ snack:'<svg viewBox="0 0 120 80"><rect width="120" height="80" rx="12" fill="#e8f4fd"/><path d="M0,80 L42,16 L84,80Z" fill="#9fd3a8"/><path d="M42,16 L33,30 L39,28 L44,33 L51,27Z" fill="#fff"/><path d="M66,28 C66,22 108,22 108,28 C113,40 113,60 108,68 C108,74 66,74 66,68 C61,60 61,40 66,28Z" fill="#ffd23f" stroke="#e0a800" stroke-width="2.5"/><path d="M68,28 H106 M68,68 H106" stroke="#e0a800" stroke-width="2.5" stroke-dasharray="4 3"/></svg>',
+ bub:'<svg viewBox="0 0 120 80"><rect width="120" height="80" rx="12" fill="#bfe0f8"/><g fill="#fff" fill-opacity=".55" stroke="#fff" stroke-width="2.5"><circle cx="58" cy="66" r="5"/><circle cx="54" cy="46" r="8"/><circle cx="60" cy="22" r="13"/></g><path d="M92,68 V14 M82,24 L92,12 L102,24" fill="none" stroke="#2476b8" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ he:'<svg viewBox="0 0 120 80"><rect width="120" height="80" rx="12" fill="#e8f4fd"/><g fill="#fff"><ellipse cx="22" cy="18" rx="14" ry="7"/><ellipse cx="102" cy="64" rx="13" ry="6"/></g><circle cx="30" cy="54" r="8" fill="#d6c2f7" stroke="#9a7ae0" stroke-width="2"/><path d="M30,62 v12" stroke="#6c7a8a" stroke-width="1.5"/><path d="M42,48 L62,36" stroke="#9a7ae0" stroke-width="2.5" stroke-dasharray="4 4" stroke-linecap="round"/><circle cx="82" cy="30" r="18" fill="#b98cf0" stroke="#9a7ae0" stroke-width="2.5"/><path d="M82,48 q-3,8 1,16" stroke="#6c7a8a" stroke-width="1.5" fill="none"/></svg>'
+};
+const SORT=[
+ ['추운 바깥에 둔 풍선이 쭈그러들어요','t','차가워지면 풍선 속 기체의 부피가 작아져요.',IC.bal],
+ ['높은 산에서 과자 봉지가 빵빵해져요','p','높은 곳은 둘레 공기의 압력이 작아서, 봉지 속 기체의 부피가 커져요.',IC.snack],
+ ['찌그러진 탁구공이 뜨거운 물에서 펴져요','t','뜨거운 물이 탁구공 속 기체를 데워, 기체의 부피가 커져요.',IC.pong],
+ ['물속 공기 방울이 위로 갈수록 커져요','p','위로 갈수록 물의 압력이 작아져서, 공기 방울의 부피가 커져요.',IC.bub],
+ ['꼭 닫은 페트병이 냉장고에서 찌그러져요','t','차가워지면 페트병 속 기체의 부피가 작아져요.',IC.pet],
+ ['하늘 높이 오른 헬륨 풍선이 커져요','p','높이 오를수록 둘레 공기의 압력이 작아져서, 풍선 속 기체의 부피가 커져요.',IC.he]
+];
+const WRONG={t:'아쉬워요. 이 카드는 차가워지거나 뜨거워져서 생긴 일이에요. 다시 넣어 보세요.',
+  p:'아쉬워요. 이 카드는 높은 곳이나 물속처럼, 둘레에서 누르는 압력이 달라져서 생긴 일이에요. 다시 넣어 보세요.'};
+const bins=$$('.bin'); let placed=0, dragC=null;
+const binAt=(x,y)=>bins.find(b=>{ const r=b.getBoundingClientRect(); return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom; });
+SORT.forEach(([txt,k,why,ic])=>{
+  const el=document.createElement('div'); el.className='pc'; el.innerHTML=ic+'<div>'+txt+'</div>'; $('#deck').appendChild(el);
+  el.addEventListener('pointerdown',e=>{ if(el.classList.contains('in')||dragC) return;
+    dragC={el,id:e.pointerId,x:e.clientX,y:e.clientY,sy:scrollY}; try{ el.setPointerCapture(e.pointerId); }catch(_){} el.classList.add('drag'); audio(); tick(); e.preventDefault(); });
+  el.addEventListener('pointermove',e=>{ if(!dragC||dragC.el!==el||e.pointerId!==dragC.id) return;
+    if(e.clientY>innerHeight-70) scrollBy(0,14); else if(e.clientY<130) scrollBy(0,-14);
+    el.style.transform=`translate(${e.clientX-dragC.x}px,${e.clientY-dragC.y+scrollY-dragC.sy}px) scale(1.05)`;
+    const b=binAt(e.clientX,e.clientY); bins.forEach(x=>x.classList.toggle('over',x===b)); });
+  const drop=e=>{ if(!dragC||dragC.el!==el||e.pointerId!==dragC.id) return; dragC=null;
+    bins.forEach(x=>x.classList.remove('over')); el.classList.remove('drag'); el.style.transform='';
+    const b=e.type==='pointerup'&&binAt(e.clientX,e.clientY); if(!b) return;
+    if(b.dataset.k===k){ el.classList.add('in'); b.querySelector('.slot').appendChild(el); ding(); sparkle(el); placed++;
+      $('#m3').textContent='딩동댕! '+why;
+      if(placed===SORT.length){ $('#m3').textContent='딩동댕! '+why+' 6장을 모두 알맞게 넣었어요!'; done(3,$('#sort')); } }
+    else{ boo(); b.classList.remove('no'); void b.offsetWidth; b.classList.add('no'); $('#m3').textContent=WRONG[k]; } };
+  el.addEventListener('pointerup',drop); el.addEventListener('pointercancel',drop);
+});
+
+/* ---------- 5 OX 퀴즈 ---------- */
+const QS=[
+ ['데운 공기가 위로 올라가는 흐름을 상승 기류라고 한다','O','티백 재를 위로 실어 올린 것이 바로 상승 기류예요.'],
+ ['열기구 속 공기를 데우면 바깥 공기가 주머니 속으로 더 들어온다','X','데우면 속 공기의 부피가 커져서, 오히려 일부가 아래 입구로 빠져나가요.'],
+ ['데운 공기는 같은 크기의 찬 공기보다 가볍다','O','뚜껑 없는 1L 통의 공기를 데우면 일부가 넘쳐 나가, 같은 크기의 찬 공기보다 가벼워져요.'],
+ ['열기구 속 공기가 식으면 열기구는 내려온다','O','속 공기가 식으면 바깥 공기가 다시 들어와서, 열기구가 내려와요.'],
+ ['온도가 같을 때 압력에 따라 기체의 부피가 바뀌는 규칙을 샤를의 법칙이라고 한다','X','그건 보일의 법칙이에요. 압력이 같을 때 온도에 따라 기체의 부피가 바뀌는 규칙이 샤를의 법칙이에요.']
+];
+let qi=0, score=0;
+function showQ(){
+  $('#ox').style.display=''; $('#qn').textContent=qi+1; $('#sc').textContent=score; $('#q').textContent=QS[qi][0];
+  $('#qfb').textContent=''; $('#qfb').className='fb'; $('#next').style.display='none'; $$('#ox button').forEach(b=>b.disabled=false);
+}
+$$('#ox button').forEach(b=>b.onclick=()=>{
+  const [,ans,why]=QS[qi], ok=b.dataset.a===ans; $$('#ox button').forEach(x=>x.disabled=true);
+  if(ok){ score++; cheer(); sparkle(b); } else boo();
+  $('#sc').textContent=score; $('#qfb').className='fb '+(ok?'good':'bad');
+  $('#qfb').textContent=(ok?'딩동댕! ':'아쉬워요. 정답은 '+ans+'예요. ')+why;
+  $('#next').textContent=qi<4?'다음 문제':'결과 보기'; $('#next').style.display='';
+});
+$('#next').onclick=()=>{
+  if(qi===5){ qi=0; score=0; showQ(); return; }
+  if(++qi<5){ showQ(); return; }
+  $('#q').textContent=`5문제 중 ${score}문제를 맞혔어요!`; $('#ox').style.display='none'; $('#qfb').className='fb good';
+  $('#qfb').textContent=score===5?'완벽해요! 모두 맞혔어요.':score>=3?'잘했어요! 틀린 문제는 앞의 실험으로 다시 확인해 보세요.':'괜찮아요. 앞의 실험을 다시 해 보고 또 도전해요!';
+  $('#next').textContent='다시 하기'; if(score===5){ tabs[4].classList.add('done'); confetti(); balloonUp(); sparkle($('#q')); cheer(); }
+};
+showQ();
+
+const hashTab=location.hash.match(/^#tab([1-5])$/); if(hashTab) showTab(hashTab[1]-1);
+
+/* ---------- 그리기 ---------- */
+const draws=[draw1,draw2,draw3];
+let last=0;
+(function loop(now){ const dt=Math.min(.25,(now-last)/1000); last=now; if(draws[cur]) draws[cur](now/1000,dt); requestAnimationFrame(loop); })(0);
+</script>
+</body>
+</html>
